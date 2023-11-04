@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="text-align: center; margin: 20px;">
+    <h1>Welcome to Shoptimize!</h1>
+    <p>Your one-stop solution for efficient store management.</p>
+    <hr>
+    <p style="margin-top: 20px;">Shoptimize is a comprehensive store management system designed to help you keep track of inventory, manage sales, and monitor employee performance. With a focus on simplicity and efficiency, our platform ensures that you have all the tools you need to run your business smoothly.</p>
+    <p>Explore the features, manage your products, and generate insightful reports—all from one convenient location. Join Shoptimize and take the first step towards smarter store management.</p>
+
+    <div style="margin-top: 30px;">
+        <h2>Features</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li><strong>Inventory Management:</strong> Real-time tracking of product stock levels.</li>
+            <li><strong>Sales Processing:</strong> Fast and reliable checkout system.</li>
+            <li><strong>Analytics:</strong> Detailed reports and data-driven insights.</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h3>Get Started</h3>
+        <p>To begin using Shoptimize, simply register an account and log in to access the dashboard.</p>
+        <a href="{{ url_for('register') }}" style="text-decoration: none; color: #333; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-right: 10px;">Register</a>
+        <a href="{{ url_for('login') }}" style="text-decoration: none; color: #333; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block;">Login</a>
+    </div>
+</div>
+{% endblock %}
