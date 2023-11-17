@@ -32,6 +32,9 @@ class ItemForm(FlaskForm):
     price = DecimalField('Price', validators=[DataRequired()])
     submit = SubmitField('Add Item')
 
+class SearchForm(FlaskForm):
+    search = StringField('Search by ID or Name', validators=[DataRequired()])
+    submit = SubmitField('Search')
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:

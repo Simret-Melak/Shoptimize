@@ -1,9 +1,8 @@
-
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm,ItemForm
+from app.forms import LoginForm, RegistrationForm,ItemForm,SearchForm
 from app.models import User,Item
 
 @app.route('/')
@@ -79,3 +78,18 @@ def add_items():
 
     return render_template('add_item.html', title='Add New Item', form=form)
 
+@app.route('/search_items', methods=['GET', 'POST'])
+def search_items():
+    form = SearchForm()
+    items = Item.query  # Start with all items
+
+    if form.validate_on_submit():
+        search_query = form.search.data
+        if search_query.isdigit():  # If the search query is numeric, assume it's an id
+            items = items.filter(Item.id == int(search_query))
+        else:  # Otherwise, search by name
+            items = items.filter(Item.name.ilike(f'%{search_query}%'))
+
+    items = items.all()  # Execute the query to retrieve the items
+
+    return render_template('search_items.html', title='Search Items', form=form, items=items)
