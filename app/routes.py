@@ -21,7 +21,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
-        if user.position not in ['manager', 'cashier', 'administrator']:
+        if user.position not in ['manager', 'cashier', 'admin']:
             flash('You do not have access to this resource.')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
@@ -150,3 +150,16 @@ def sell_item():
         # Optionally log the error for debugging: app.logger.error('Error: %s', e)
 
     return redirect(url_for('search_items_cashier'))
+
+
+@app.route('/scarce_item', methods=['GET', 'POST'])
+@login_required
+def scarce_item():
+    # Define the threshold for scarcity
+    scarcity_threshold = 10
+
+    # Fetch items whose quantity is below the threshold
+    scarce_items = Item.query.filter(Item.quantity < scarcity_threshold).all()
+
+    # Render a template, passing the scarce items
+    return render_template('scarce_items.html', items=scarce_items)
