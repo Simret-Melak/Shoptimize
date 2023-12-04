@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField,SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,SelectField,IntegerField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
-
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -25,6 +24,22 @@ class RegistrationForm(FlaskForm):
                            choices=[('manager', 'Store Manager'), ('cashier', 'Cashier'), ('admin', 'Administrator')],
                            validators=[DataRequired()])
 
+class ItemForm(FlaskForm):
+    name = StringField('Item Name', validators=[DataRequired()])
+    unit = StringField('Unit of Measure', validators=[DataRequired()])
+    type = StringField('Type', validators=[DataRequired()])
+    quantity = DecimalField('Quantity', validators=[DataRequired()])
+    price = DecimalField('Price', validators=[DataRequired()])
+    submit = SubmitField('Add Item')
+
+class SearchForm(FlaskForm):
+    search = StringField('Search by ID or Name', validators=[DataRequired()])
+    submit = SubmitField('Search')
+
+class AddToCartForm(FlaskForm):
+    item_id = IntegerField('Item ID', validators=[DataRequired()])
+    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    submit = SubmitField('Add to Cart')
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
@@ -34,3 +49,5 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+

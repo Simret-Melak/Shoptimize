@@ -33,8 +33,8 @@ class Item(db.Model):
     date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     unit = db.Column(db.String(140))
     type = db.Column(db.String(140))
-    quantity=db.Column(db.Integer)
-    price = db.Column(db.Integer)
+    quantity=db.Column(db.Numeric(10, 2))
+    price = db.Column(db.Numeric(10, 2))
     sold_items = db.relationship('Sold',backref='item',lazy='dynamic')
 
     def __repr__(self):
