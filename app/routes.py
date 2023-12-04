@@ -155,11 +155,6 @@ def sell_item():
 @app.route('/scarce_item', methods=['GET', 'POST'])
 @login_required
 def scarce_item():
-    # Define the threshold for scarcity
     scarcity_threshold = 10
-
-    # Fetch items whose quantity is below the threshold
     scarce_items = Item.query.filter(Item.quantity < scarcity_threshold).all()
-
-    # Render a template, passing the scarce items
     return render_template('scarce_items.html', items=scarce_items)
