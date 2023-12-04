@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Search Items</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ form.search.label }} {{ form.search(size=32) }}
+        <input type="submit" value="Search">
+    </form>
+
+    <table>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>
+                    <form action="{{ url_for('sell_item') }}" method="post">
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="number" name="sell_quantity" min="1" value="1">
+                        <input type="submit" value="Sell">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
