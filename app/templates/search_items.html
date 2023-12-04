@@ -1,0 +1,26 @@
+<!-- app/templates/search_items.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search Items</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.search.label }}<br>
+        {{ form.search(size=32) }} {{ form.submit() }}
+    </p>
+</form>
+
+{% if items %}
+    <ul>
+        <li>ID - NAME - UNIT - TYPE - QUANTITY - PRICE</li>
+    {% for item in items %}
+        <li>{{item.id}}-{{ item.name }} - {{ item.unit }} - {{ item.type }} - {{ item.quantity }} - {{ item.price }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No items found.</p>
+{% endif %}
+
+{% endblock %}
