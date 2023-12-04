@@ -6,7 +6,6 @@ from app.forms import LoginForm, RegistrationForm,ItemForm,SearchForm
 from app.models import User,Item,Sold
 from flask import jsonify
 
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -56,7 +55,6 @@ def register():
 
 @app.route('/add_items', methods=['GET', 'POST'])
 def add_items():
-
     # Check if the current user is authenticated and is a manager
     if not current_user.is_authenticated or current_user.position != 'manager':
         flash('You must be a manager to access this page.')
@@ -64,7 +62,6 @@ def add_items():
 
     form = ItemForm()
     if form.validate_on_submit():
-
         # Search for an existing item with the same name
         existing_item = Item.query.filter_by(name=form.name.data).first()
 
@@ -96,7 +93,6 @@ def add_items():
 
 
 
-
 @app.route('/search_items', methods=['GET', 'POST'])
 def search_items():
     form = SearchForm()
@@ -110,7 +106,6 @@ def search_items():
             items = items.filter(Item.name.ilike(f'%{search_query}%'))
 
     items = items.all()  # Execute the query to retrieve the items
-
 
     return render_template('search_items.html', title='Search Items', form=form, items=items)
 
