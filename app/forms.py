@@ -35,6 +35,11 @@ class ItemForm(FlaskForm):
 class SearchForm(FlaskForm):
     search = StringField('Search by ID or Name', validators=[DataRequired()])
     submit = SubmitField('Search')
+
+class AddToCartForm(FlaskForm):
+    item_id = IntegerField('Item ID', validators=[DataRequired()])
+    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    submit = SubmitField('Add to Cart')
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:

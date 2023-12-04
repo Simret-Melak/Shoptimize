@@ -3,7 +3,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm,ItemForm,SearchForm
-from app.models import User,Item
+from app.models import User,Item,Sold
+from flask import jsonify
 
 @app.route('/')
 @app.route('/index')
@@ -54,29 +55,43 @@ def register():
 
 @app.route('/add_items', methods=['GET', 'POST'])
 def add_items():
-    # Check if the current user is authenticated and a manager/admin
-    if not current_user.is_authenticated or current_user.position not in ['manager', 'admin']:
-        flash('You must be a manager or admin to access this page.')
+    # Check if the current user is authenticated and is a manager
+    if not current_user.is_authenticated or current_user.position != 'manager':
+        flash('You must be a manager to access this page.')
         return redirect(url_for('index'))
 
     form = ItemForm()
     if form.validate_on_submit():
-        # Instantiate an Item with form data
-        item = Item(
-            name=form.name.data,
-            unit=form.unit.data,
-            type=form.type.data,
-            quantity=form.quantity.data,
-            price=form.price.data
-        )
+        # Search for an existing item with the same name
+        existing_item = Item.query.filter_by(name=form.name.data).first()
 
-        db.session.add(item)
+        if existing_item:
+            # If the item exists, update its attributes
+            existing_item.unit = form.unit.data
+            existing_item.type = form.type.data
+            existing_item.quantity = form.quantity.data
+            existing_item.price = form.price.data
+            flash('Item details have been updated.')
+        else:
+            # If the item does not exist, create a new item
+            new_item = Item(
+                name=form.name.data,
+                unit=form.unit.data,
+                type=form.type.data,
+                quantity=form.quantity.data,
+                price=form.price.data
+            )
+            db.session.add(new_item)
+            flash('The new item has been added!')
+
+        # Commit changes to the database
         db.session.commit()
-        flash('The new item has been added!')
+
         return redirect(url_for('index'))
 
-
     return render_template('add_item.html', title='Add New Item', form=form)
+
+
 
 @app.route('/search_items', methods=['GET', 'POST'])
 def search_items():
@@ -93,3 +108,45 @@ def search_items():
     items = items.all()  # Execute the query to retrieve the items
 
     return render_template('search_items.html', title='Search Items', form=form, items=items)
+
+@app.route('/search_items_cashier', methods=['GET', 'POST'])
+def search_items_cashier():
+    form = SearchForm()
+    items = Item.query  # Start with all items
+
+    if form.validate_on_submit():
+        search_query = form.search.data
+        if search_query.isdigit():  # If the search query is numeric, assume it's an id
+            items = items.filter(Item.id == int(search_query))
+        else:  # Otherwise, search by name
+            items = items.filter(Item.name.ilike(f'%{search_query}%'))
+
+    items = items.all()  # Execute the query to retrieve the items
+
+    return render_template('search_items_cashier.html', title='Search Items Cashier', form=form, items=items)
+
+@app.route('/sell_item', methods=['POST'])
+@login_required  # If login is required
+def sell_item():
+    item_id = request.form.get('item_id', type=int)
+    sell_quantity = request.form.get('sell_quantity', type=int)
+
+    item = Item.query.get(item_id)
+    if not item or item.quantity < sell_quantity:
+        flash('Invalid item or insufficient quantity.')
+        return redirect(url_for('search_items_cashier'))
+
+    item.quantity -= sell_quantity
+    sale = Sold(quantity=sell_quantity, item_id=item_id, cashier_id=current_user.id)
+    db.session.add(item)
+    db.session.add(sale)
+
+    try:
+        db.session.commit()
+        flash('Sale successful.')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error processing sale.')
+        # Optionally log the error for debugging: app.logger.error('Error: %s', e)
+
+    return redirect(url_for('search_items_cashier'))
