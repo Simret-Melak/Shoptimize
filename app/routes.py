@@ -5,6 +5,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm,ItemForm,SearchForm
 from app.models import User,Item,Sold
 from flask import jsonify
+from sqlalchemy import desc
 
 @app.route('/')
 @app.route('/index')
@@ -165,9 +166,9 @@ def sell_item():
         # Optionally log the error for debugging: app.logger.error('Error: %s', e)
 
     return redirect(url_for('search_items_cashier'))
-from sqlalchemy import desc
 
-@app.route('/top_selling_items')
+
+
 
 @app.route('/top_selling_items')
 @login_required
@@ -212,3 +213,15 @@ def sales_and_profit():
     sales = sales_query.all()
 
     return render_template('sales_and_profit.html', title='Sales and Profit', form=form, sales=sales)
+
+@app.route('/scarce_item', methods=['GET', 'POST'])
+@login_required
+def scarce_item():
+    # Define the threshold for scarcity
+    scarcity_threshold = 10
+
+    # Fetch items whose quantity is below the threshold
+    scarce_items = Item.query.filter(Item.quantity < scarcity_threshold).all()
+
+    # Render a template, passing the scarce items
+    return render_template('scarce_items.html', items=scarce_items)

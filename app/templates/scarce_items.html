@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h1>Scarce Items</h1>
-    <table>
-        <tr>
+{% block app_content %}
+  <div class="container">
+        <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
+        <h2>Scarce Item</h2>
+     <table class="table table-bordered" style="width: 80%;">
+            <thead class="thead-light">
             <th>Item Name</th>
             <th>Quantity</th>
             <th>Price</th>
-
-        </tr>
+  </thead>
+        <tbody>
         {% for item in items %}
         <tr>
             <td>{{ item.name }}</td>
@@ -17,5 +19,7 @@
 
         </tr>
         {% endfor %}
+         </tbody>
     </table>
+        </div></div>
 {% endblock %}
