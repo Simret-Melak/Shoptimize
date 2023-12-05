@@ -35,6 +35,7 @@ class Item(db.Model):
     type = db.Column(db.String(140))
     quantity=db.Column(db.Numeric(10, 2))
     price = db.Column(db.Numeric(10, 2))
+    cost_price = db.Column(db.Numeric(10, 2))
     sold_items = db.relationship('Sold',backref='item',lazy='dynamic')
 
     def __repr__(self):

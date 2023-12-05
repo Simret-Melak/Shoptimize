@@ -25,15 +25,16 @@ class RegistrationForm(FlaskForm):
                            validators=[DataRequired()])
 
 class ItemForm(FlaskForm):
-    name = StringField('Item Name', validators=[DataRequired()])
-    unit = StringField('Unit of Measure', validators=[DataRequired()])
-    type = StringField('Type', validators=[DataRequired()])
-    quantity = DecimalField('Quantity', validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired()])
+    name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "type here"})
+    unit = StringField('Unit of Measure', validators=[DataRequired()], render_kw={"placeholder": "type here"})
+    type = StringField('Type', validators=[DataRequired()], render_kw={"placeholder": "type here"})
+    quantity = DecimalField('Quantity', validators=[DataRequired()], render_kw={"placeholder": "type here"})
+    price = DecimalField('Price', validators=[DataRequired()], render_kw={"placeholder": "type here"})
+    cost_price = DecimalField('Cost Price', validators=[DataRequired()], render_kw={"placeholder": "type here"})
     submit = SubmitField('Add Item')
 
 class SearchForm(FlaskForm):
-    search = StringField('Search by ID or Name', validators=[DataRequired()])
+    search = StringField('Search', validators=[DataRequired()], render_kw={"placeholder": "Id or Name"})
     submit = SubmitField('Search')
 
 class AddToCartForm(FlaskForm):

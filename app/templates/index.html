@@ -1,27 +1,51 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div style="text-align: center; margin: 20px;">
-    <h1>Welcome to Shoptimize!</h1>
-    <p>Your one-stop solution for efficient store management.</p>
-    <hr>
-    <p style="margin-top: 20px;">Shoptimize is a comprehensive store management system designed to help you keep track of inventory, manage sales, and monitor employee performance. With a focus on simplicity and efficiency, our platform ensures that you have all the tools you need to run your business smoothly.</p>
-    <p>Explore the features, manage your products, and generate insightful reports—all from one convenient location. Join Shoptimize and take the first step towards smarter store management.</p>
+{% block app_content %}
+<div style="margin: 20px;">
+    <!-- Introduction -->
+    <div style="background-color: rgba(246, 255, 248, 0.5); padding: 20px; border-radius: 10px; width: 60%; margin-left: -25px; margin-right: auto; overflow: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);">
 
-    <div style="margin-top: 30px;">
-        <h2>Features</h2>
-        <ul style="list-style: none; padding: 0;">
-            <li><strong>Inventory Management:</strong> Real-time tracking of product stock levels.</li>
-            <li><strong>Sales Processing:</strong> Fast and reliable checkout system.</li>
-            <li><strong>Analytics:</strong> Detailed reports and data-driven insights.</li>
-        </ul>
+        <div style="float: left; width: 80%;">
+            <h1>Welcome to Shoptimize!</h1>
+            <p>Your one-stop solution for efficient store management.</p>
+            <hr>
+            <p style="margin-top: 20px; font-size: 14px; line-height: 1.5;">
+                Shoptimize is a comprehensive store management system designed to help you keep track of inventory, manage sales, and monitor employee performance. With a focus on simplicity and efficiency, our platform ensures that you have all the tools you need to run your business smoothly.
+            </p>
+            <p style="font-size: 14px; line-height: 1.5;">
+                Explore the features, manage your products, and generate insightful reports—all from one convenient location. Join Shoptimize and take the first step towards smarter store management.
+            </p>
+            <!-- Learn More -->
+            <a href="#features-section" style="text-decoration: none; color: #333;background-color:#ECE4B7; padding: 10px 20px; border-radius: 6px; display: inline-block; margin-top: 20px;">Learn More</a>
+        </div>
+
     </div>
 
-    <div style="margin-top: 30px;">
-        <h3>Get Started</h3>
+    <!-- Features -->
+    <div id="features-section" style="margin-top: 25px; background-color: rgba(246, 255, 248, 0.5); padding: 20px; border-radius: 10px; width: 100%; margin-left: -25px; margin-right: auto; overflow: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);">
+        <h2>Features</h2>
+        <div style="padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+            <h5><u>Feature 1</u></h5>
+            <p><strong>Inventory Management:</strong> Real-time tracking of product stock levels. Easily add, remove, and update your inventory. Set low-stock alerts to replenish products on time.</p>
+        </div>
+<hr>
+        <div style="padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+            <h5><u>Feature 2</u></h5>
+            <p><strong>Sales Processing:</strong> Fast and reliable checkout system. Accept various payment methods, generate receipts, and keep track of customer transactions. Enhance customer experience during the checkout process.</p>
+        </div>
+<hr>
+        <div style="padding: 15px; border-radius: 5px;">
+            <h5><u>Feature 3</u></h5>
+            <p><strong>Analytics:</strong> Detailed reports and data-driven insights. Gain valuable insights into your business performance with customizable reports. Analyze sales trends, identify top-selling products, and make informed decisions to boost profitability.</p>
+        </div>
+    </div>
+
+    <!-- Get Started -->
+    <div style="margin-top: 30px; background-color: rgba(246, 255, 248, 0.5); padding: 20px; border-radius: 10px; width: 100%; margin-left: -25px; margin-right: auto; overflow: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);">
+        <h2>Get Started</h2>
         <p>To begin using Shoptimize, simply register an account and log in to access the dashboard.</p>
-        <a href="{{ url_for('register') }}" style="text-decoration: none; color: #333; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-right: 10px;">Register</a>
-        <a href="{{ url_for('login') }}" style="text-decoration: none; color: #333; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block;">Login</a>
+
+        <!-- <a href="{{ url_for('register') }}" style="text-decoration: none; color: #333; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-right: 10px;">Register</a> -->
     </div>
 </div>
 {% endblock %}
