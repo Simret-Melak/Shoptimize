@@ -3,12 +3,12 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm,ItemForm,SearchForm
-<<<<<<<<< Temporary merge branch 1
+
 from app.models import User,Item
-=========
+
 from app.models import User,Item,Sold
 from flask import jsonify
->>>>>>>>> Temporary merge branch 2
+
 
 @app.route('/')
 @app.route('/index')
@@ -95,11 +95,7 @@ def add_items():
 
     return render_template('add_item.html', title='Add New Item', form=form)
 
-<<<<<<<<< Temporary merge branch 1
-=========
 
-
->>>>>>>>> Temporary merge branch 2
 @app.route('/search_items', methods=['GET', 'POST'])
 def search_items():
     form = SearchForm()
@@ -114,9 +110,6 @@ def search_items():
 
     items = items.all()  # Execute the query to retrieve the items
 
-<<<<<<<<< Temporary merge branch 1
-    return render_template('search_items.html', title='Search Items', form=form, items=items)
-=========
     return render_template('search_items.html', title='Search Items', form=form, items=items)
 
 @app.route('/search_items_cashier', methods=['GET', 'POST'])
@@ -160,4 +153,4 @@ def sell_item():
         # Optionally log the error for debugging: app.logger.error('Error: %s', e)
 
     return redirect(url_for('search_items_cashier'))
->>>>>>>>> Temporary merge branch 2
+
