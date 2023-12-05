@@ -1,26 +1,43 @@
-<!-- app/templates/search_items.html -->
+{% extends 'base.html' %}
 
-{% extends "base.html" %}
+{% block app_content %}
+    <div class="container">
+        <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
+            <h2>{{ title }}</h2>
 
-{% block content %}
-<h1>Search Items</h1>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.search.label }}<br>
-        {{ form.search(size=32) }} {{ form.submit() }}
-    </p>
-</form>
+            <form method="post" action="{{ url_for('sales_and_profit') }}">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="search">Search:</label>
+                    <input type="text" id="search" name="search" placeholder="Id or Name" {% if form.search.data is not none %}value="{{ form.search.data }}"{% endif %}>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
 
-{% if items %}
-    <ul>
-        <li>ID - NAME - UNIT - TYPE - QUANTITY - PRICE</li>
-    {% for item in items %}
-        <li>{{item.id}}-{{ item.name }} - {{ item.unit }} - {{ item.type }} - {{ item.quantity }} - {{ item.price }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No items found.</p>
-{% endif %}
-
+            <table class="table table-bordered" style="width: 80%;">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Unit</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.unit}}</td>
+                            <td>{{ item.type}}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,27 +1,50 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h1>Search Items</h1>
-    <form method="post">
-        {{ form.hidden_tag() }}
-        {{ form.search.label }} {{ form.search(size=32) }}
-        <input type="submit" value="Search">
-    </form>
+{% block app_content %}
+    <div class="container">
+        <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
+        <h2>Sell Item</h2>
 
-    <table>
-        {% for item in items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.price }}</td>
-                <td>
-                    <form action="{{ url_for('sell_item') }}" method="post">
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <input type="number" name="sell_quantity" min="1" value="1">
-                        <input type="submit" value="Sell">
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+        <form method="post" class="mb-3">
+            {{ form.hidden_tag() }}
+            <div class="input-group">
+                {{ form.search.label }}
+                {{ form.search(size=32, class="form-control") }}
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered" style="width: 60%;">
+            <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>
+                            <form action="{{ url_for('sell_item') }}" method="post">
+                                <div class="input-group">
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <input type="number" name="sell_quantity" class="form-control" min="1" value="1">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-success">Sell</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div></div>
 {% endblock %}

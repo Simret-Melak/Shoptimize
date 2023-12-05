@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block app_content%}
+<div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
+    <h2>{{ title }}</h2>
+
+    <table class="table table-bordered" style="width: 80%;">
+            <thead class="thead-light">
+            <tr>
+                <th>Rank</th>
+                <th>Item Name</th>
+                <th>Total Sold</th>
+                <th>Total Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in top_items %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.total_sold }}</td>
+                    <td>{{ item.total_profit }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
