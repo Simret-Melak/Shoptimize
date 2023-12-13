@@ -176,7 +176,7 @@ def top_selling_items():
     top_items = db.session.query(
         Item.name,
         db.func.sum(Sold.quantity).label('total_sold'),
-        db.func.sum((Item.price - Item.cost_price) * Sold.quantity).label('total_profit')
+        db.func.sum((Item.cost_price-Item.price ) * Sold.quantity).label('total_profit')
     ).join(Sold).group_by(Item.id).order_by(desc('total_sold')).limit(10).all()
 
     return render_template('top_selling_items.html', title='Top Selling Items', top_items=top_items)
@@ -192,7 +192,7 @@ def sales_and_profit():
         Item.price.label('buying_price'),
         Sold.quantity,
         (Item.price * Sold.quantity).label('selling_price'),
-        ((Item.price - Item.cost_price) * Sold.quantity).label('profit')
+        ((Item.cost_price-Item.price) * Sold.quantity).label('profit')
     )
 
 
@@ -205,10 +205,11 @@ def sales_and_profit():
                 sales_query = sales_query.filter(Sold.id == search_query_int)
             except ValueError:
                 sales_query = sales_query.filter(Item.name.ilike(f'%{search_query}%'))
-
+    total_sales = sum(sale.selling_price for sale in sales_query)
+    total_profit = sum(sale.profit for sale in sales_query)
     sales = sales_query.all()
 
-    return render_template('sales_and_profit.html', title='Sales and Profit', form=form, sales=sales)
+    return render_template('sales_and_profit.html', title='Sales and Profit', form=form, sales=sales, total_sales=total_sales, total_profit=total_profit)
 
 @app.route('/scarce_item', methods=['GET', 'POST'])
 @login_required
@@ -221,3 +222,4 @@ def scarce_item():
 
     # Render a template, passing the scarce items
     return render_template('scarce_items.html', items=scarce_items)
+

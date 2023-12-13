@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-    <div class="container">
-        <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
+<div class="container">
+    <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto;">
         <h2>{{ title }}</h2>
 
         <form method="post" action="{{ url_for('sales_and_profit') }}">
@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="search">Search:</label>
                 <input type="text" id="search" name="search" placeholder="Id or Name" {% if form.search.data is not none %}value="{{ form.search.data }}"{% endif %}>
-             <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary">Search</button>
             </div>
 
         </form>
@@ -22,22 +22,31 @@
                     <th>Item Name</th>
                     <th>Buying Price</th>
                     <th>Quantity Sold</th>
-                    <th>Selling Price</th>
+                    <th>Gross Sales</th>
                     <th>Profit</th>
                 </tr>
             </thead>
             <tbody>
                 {% for sale in sales %}
-                    <tr>
-                        <td>{{ sale.id }}</td>
-                        <td>{{ sale.name }}</td>
-                        <td>{{ sale.buying_price }}</td>
-                        <td>{{ sale.quantity }}</td>
-                        <td>{{ sale.selling_price }}</td>
-                        <td>{{ sale.profit }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ sale.id }}</td>
+                    <td>{{ sale.name }}</td>
+                    <td>{{ sale.buying_price }}</td>
+                    <td>{{ sale.quantity }}</td>
+                    <td>{{ sale.selling_price }}</td>
+                    <td>{{ sale.profit }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-        </div></div>
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Total Sales:</strong> {{ total_sales }}
+            </div>
+            <div class="col-md-6">
+                <strong>Total Profit:</strong> {{ total_profit }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
