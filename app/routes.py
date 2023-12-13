@@ -19,18 +19,14 @@ from flask import flash
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-
     form = LoginForm()
-
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
-
         # Retrieve the position from the form
         desired_position = form.position.data
-
         # Check if the user's position matches the desired position
         if user.position != desired_position:
             flash('You do not have access to this resource as ' + desired_position)
@@ -70,32 +66,32 @@ def register():
 
 @app.route('/add_items', methods=['GET', 'POST'])
 def add_items():
-
+    # Check if the current user is authenticated and is a manager
     if not current_user.is_authenticated or current_user.position != 'manager':
         flash('You must be a manager to access this page.')
         return redirect(url_for('index'))
 
     form = ItemForm()
     if form.validate_on_submit():
-        # Search for an existing item with the same name
-        existing_item = Item.query.filter_by(name=form.name.data).first()
+        # Search for an existing item with the same name and type
+        existing_item = Item.query.filter_by(name=form.name.data, type=form.type.data).first()
 
         if existing_item:
-            # If the item exists, update its attributes
-            existing_item.unit = form.unit.data
-            existing_item.type = form.type.data
-            existing_item.quantity = form.quantity.data
+            # If the item exists, update its price, quantity, and add to the buying and selling prices
+
+            existing_item.quantity += form.quantity.data
+            existing_item.cost_price = form.cost_price.data
             existing_item.price = form.price.data
             flash('Item details have been updated.')
         else:
-
+            # If the item does not exist, create a new item
             new_item = Item(
                 name=form.name.data,
                 unit=form.unit.data,
                 type=form.type.data,
                 quantity=form.quantity.data,
-                price=form.price.data,
-                cost_price = form.cost_price.data
+                price=form.cost_price.data,
+                cost_price=form.price.data
             )
             db.session.add(new_item)
             flash('The new item has been added!')
